@@ -4,49 +4,37 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-let sessions = [
-  { email: 'client1@example.com', device: 'DeviceA1', ip: '192.168.1.10', time: '2025-04-16 08:45', status: 'active' },
-  { email: 'client2@example.com', device: 'DeviceB9', ip: '103.21.244.1', time: '2025-04-16 07:30', status: 'blocked' }
-];
+let inviteCodes = ['INVITE123', 'JOIN2025']; // example codes
+let usedCodes = [];
 
-// Fetch all sessions
-app.get('/api/sessions', (req, res) => {
-  res.json(sessions);
+app.post('/api/generate-invite', (req, res) => {
+  const newCode = 'INV' + Math.floor(Math.random() * 1000000);
+  inviteCodes.push(newCode);
+  res.json({ code: newCode });
 });
 
-// Block a session
-app.post('/api/block-session', (req, res) => {
-  const { email, device } = req.body;
-  const found = sessions.find(s => s.email === email && s.device === device);
-  if (found) {
-    found.status = 'blocked';
-    return res.json({ message: 'Session blocked' });
+app.post('/api/invite-register', (req, res) => {
+  const { email, password, inviteCode } = req.body;
+  if (!inviteCodes.includes(inviteCode)) {
+    return res.status(400).json({ message: 'Invalid or used invite code' });
   }
-  res.status(404).json({ message: 'Session not found' });
+  usedCodes.push(inviteCode);
+  inviteCodes = inviteCodes.filter(c => c !== inviteCode);
+  res.json({ message: 'Registered with invite successfully' });
 });
 
-// Unblock a session
-app.post('/api/unblock-session', (req, res) => {
-  const { email, device } = req.body;
-  const found = sessions.find(s => s.email === email && s.device === device);
-  if (found) {
-    found.status = 'active';
-    return res.json({ message: 'Session unblocked' });
+app.post('/api/verify-email', (req, res) => {
+  const { code } = req.body;
+  if (code === "123456") {
+    return res.json({ message: 'Email verified' });
   }
-  res.status(404).json({ message: 'Session not found' });
+  res.status(400).json({ message: 'Invalid code' });
 });
 
-// Simulated login route with device tracking
-app.post('/api/login', (req, res) => {
-  const { email, device, ip } = req.body;
-  const existing = sessions.find(s => s.email === email && s.device === device);
-  if (existing && existing.status === 'blocked') {
-    return res.status(403).json({ message: 'This device is blocked for this user.' });
-  }
-
-  const newSession = { email, device, ip, time: new Date().toISOString(), status: 'active' };
-  sessions.push(newSession);
-  res.json({ message: 'Login success', session: newSession });
+app.post('/api/forgot-password', (req, res) => {
+  const { email } = req.body;
+  console.log(`Simulating password reset email to ${email}`);
+  res.json({ message: 'Password reset link sent (simulated)' });
 });
 
-app.listen(5001, () => console.log('WinMoxx Session Firewall running on port 5001'));
+app.listen(5000, () => console.log('Invite & email backend running on port 5000'));

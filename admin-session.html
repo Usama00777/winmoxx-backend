@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Client Session Control - WinMoxx</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-900 p-6">
+  <div class="max-w-6xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6 text-center">Client Session Management</h1>
+    <div class="overflow-auto shadow rounded-xl bg-white">
+      <table class="min-w-full">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="px-4 py-2 text-left">Client Email</th>
+            <th class="px-4 py-2 text-left">Device ID</th>
+            <th class="px-4 py-2 text-left">IP Address</th>
+            <th class="px-4 py-2 text-left">Login Time</th>
+            <th class="px-4 py-2 text-left">Status</th>
+            <th class="px-4 py-2 text-left">Action</th>
+          </tr>
+        </thead>
+        <tbody id="sessionTable">
+          <tr class="border-b">
+            <td class="px-4 py-2">client1@example.com</td>
+            <td class="px-4 py-2">DeviceA1</td>
+            <td class="px-4 py-2">192.168.1.10</td>
+            <td class="px-4 py-2">2025-04-16 08:45</td>
+            <td class="px-4 py-2 text-green-600 font-bold">Active</td>
+            <td class="px-4 py-2">
+              <button class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">Block</button>
+            </td>
+          </tr>
+          <tr class="border-b">
+            <td class="px-4 py-2">client2@example.com</td>
+            <td class="px-4 py-2">DeviceB9</td>
+            <td class="px-4 py-2">103.21.244.1</td>
+            <td class="px-4 py-2">2025-04-16 07:30</td>
+            <td class="px-4 py-2 text-red-600 font-bold">Blocked</td>
+            <td class="px-4 py-2">
+              <button class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">Unblock</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Register with Invite</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
+    <h2 class="text-xl font-bold mb-4 text-center">Register (Invite Only)</h2>
+    <form onsubmit="registerWithInvite(event)" class="space-y-4">
+      <input id="invite" placeholder="Invite Code" required class="w-full px-4 py-2 border rounded" />
+      <input id="email" type="email" placeholder="Email" required class="w-full px-4 py-2 border rounded" />
+      <input id="password" type="password" placeholder="Password" required class="w-full px-4 py-2 border rounded" />
+      <button class="bg-blue-600 text-white py-2 w-full rounded hover:bg-blue-700">Register</button>
+    </form>
+    <p id="message" class="text-center mt-4 text-sm"></p>
+  </div>
+
+  <script>
+    async function registerWithInvite(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const invite = document.getElementById('invite').value;
+      const res = await fetch('https://winmoxx-backend.onrender.com/api/invite-register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, inviteCode: invite })
+      });
+      const result = await res.json();
+      const msg = document.getElementById('message');
+      msg.textContent = res.ok ? "Registered successfully!" : result.message;
+      msg.style.color = res.ok ? 'green' : 'red';
+    }
+  </script>
+</body>
+</html>
